@@ -18,20 +18,20 @@ router.post('/', async (req, res) => {
     //       user,
     //     });
   
+    
     try {
       const transaction_id = await getNextSequence('transaction_id'); // Get the next sequence number
-  
       const newTransaction = new Transaction({
-        transaction_id,
-        amount,
-        transaction_type,
-        user,
+        transaction_id: transaction_id,
+        amount: amount,
+        transaction_type: transaction_type,
+        user: user,
       });
   
       await newTransaction.save();
-      res.status(201).json(newTransaction);
+      return res.status(201).json(newTransaction);
     } catch (error) {
-      res.status(400).json({ error: error.message });
+      return res.status(400).json({ error: error.message });
     }
   });
 
@@ -41,9 +41,9 @@ router.get('/', async (req, res) => {
 
   try {
     const transactions = await Transaction.find({ user: user_id });
-    res.json(transactions);
+    return res.json(transactions);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -67,7 +67,7 @@ router.put('/:transaction_id', async (req, res) => {
       return res.status(404).json({ error: 'Transaction not found' });
     }
 
-    res.json(updatedTransaction);
+    return res.json(updatedTransaction);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -84,9 +84,9 @@ router.get('/:transaction_id', async (req, res) => {
       return res.status(404).json({ error: 'Transaction not found' });
     }
 
-    res.json(transaction);
+    return res.json(transaction);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
